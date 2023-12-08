@@ -11,10 +11,7 @@ import ru.sidey383.minecraftauth.location.LocationController;
 import ru.sidey383.minecraftauth.user.User;
 import ru.sidey383.minecraftauth.user.UserFactory;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +27,8 @@ public class AuthorizationSystem implements Listener {
     private final Collection<AuthorizationModule> modules;
 
     private final Map<User, AuthorizationModule> authorizations = new ConcurrentHashMap<>();
+
+    private final Set<User> authorized = Collections.synchronizedSet(new HashSet<>());
 
     public AuthorizationSystem(
             Plugin plugin,
@@ -61,7 +60,10 @@ public class AuthorizationSystem implements Listener {
                     authorizations.remove(user);
                     switch (status) {
                         case Error -> pl.kick(Component.text("Authorization error"));
-                        case Authorized -> locationController.restoreLocation(user);
+                        case Authorized -> {
+                            authorized.add(user);
+                            locationController.restoreLocation(user);
+                        }
                         case NotAuthorized -> pl.kick(Component.text("Can't authorize"));
                     }
                 });
@@ -74,7 +76,10 @@ public class AuthorizationSystem implements Listener {
             authorizations.remove(user);
             switch (status) {
                 case Error -> pl.kick(Component.text("Registration error"));
-                case Registered -> locationController.restoreLocation(user);
+                case Registered -> {
+                    authorized.add(user);
+                    locationController.restoreLocation(user);
+                }
             }
         });
     }
@@ -84,6 +89,9 @@ public class AuthorizationSystem implements Listener {
         User user = userFactory.createUser(e.getPlayer());
         AuthorizationModule module = authorizations.remove(user);
         module.abort(user);
+        if (authorized.contains(user)) {
+            locationController.saveLocation(user);
+        }
     }
 
     @EventHandler

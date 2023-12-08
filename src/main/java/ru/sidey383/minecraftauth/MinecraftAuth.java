@@ -7,14 +7,12 @@ import ru.sidey383.minecraftauth.core.AuthorizationSystem;
 import ru.sidey383.minecraftauth.database.FileDatabase;
 import ru.sidey383.minecraftauth.location.FileLocationController;
 import ru.sidey383.minecraftauth.module.password.PasswordAuthorizationModule;
-import ru.sidey383.minecraftauth.user.MessageListener;
 import ru.sidey383.minecraftauth.user.MinecraftMessageListener;
 import ru.sidey383.minecraftauth.user.SimpleUserFactory;
 import ru.sidey383.minecraftauth.user.UserFactory;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Plugin(
@@ -40,6 +38,7 @@ public class MinecraftAuth extends JavaPlugin {
         }
         FileLocationController locationController = new FileLocationController(locDir, getLogger());
         Collection<AuthorizationModule> modules = List.of(new PasswordAuthorizationModule());
+        modules.forEach(m -> m.setDatabase(database));
         listener = new MinecraftMessageListener(this);
         UserFactory factory = new SimpleUserFactory(listener);
         system = new AuthorizationSystem(this, factory, locationController, modules);

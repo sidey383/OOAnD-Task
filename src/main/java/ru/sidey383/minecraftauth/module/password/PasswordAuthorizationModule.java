@@ -16,8 +16,7 @@ public class PasswordAuthorizationModule implements AuthorizationModule {
 
     @Override
     public void registerUser(User user, CallBack<RegistrationStatus> callback) {
-        var st = new PasswordRegistrationStatus(callback);
-        user.sendMessage(Component.text("Write password"));
+        registerDialog(user, new PasswordRegistrationStatus(callback));
     }
 
     private void registerDialog(User user, PasswordRegistrationStatus status) {
@@ -84,8 +83,6 @@ public class PasswordAuthorizationModule implements AuthorizationModule {
         private String password;
 
         private final CallBack<RegistrationStatus> statusCallBack;
-
-        private boolean isAborted = false;
 
         private PasswordRegistrationStatus(CallBack<RegistrationStatus> statusCallBack) {
             this.statusCallBack = statusCallBack;
