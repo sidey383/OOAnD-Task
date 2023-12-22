@@ -15,6 +15,9 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Основной класс плагина, запускает плагин.
+ * **/
 @Plugin(
         name = "MinecraftAuth",
         version = "1.0-SNAPSHOT"
@@ -36,7 +39,7 @@ public class MinecraftAuth extends JavaPlugin {
         if (!locDir.exists()) {
             locDir.mkdirs();
         }
-        FileLocationController locationController = new FileLocationController(locDir, getLogger());
+        FileLocationController locationController = new FileLocationController(locDir, getLogger(), this);
         Collection<AuthorizationModule> modules = List.of(new PasswordAuthorizationModule());
         modules.forEach(m -> m.setDatabase(database));
         listener = new MinecraftMessageListener(this);

@@ -7,6 +7,9 @@ import ru.sidey383.minecraftauth.CallBack;
 
 import java.util.UUID;
 
+/**
+ * Обычный пользователь. Полностью реализует интерфейс User
+ * **/
 public class SimpleUser implements User {
 
     private final Player player;

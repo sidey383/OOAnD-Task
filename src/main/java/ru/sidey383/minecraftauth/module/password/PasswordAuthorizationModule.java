@@ -10,6 +10,9 @@ import ru.sidey383.minecraftauth.user.User;
 
 import java.util.Optional;
 
+/**
+ * Основной модуль авторизации - по паролю
+ * **/
 public class PasswordAuthorizationModule implements AuthorizationModule {
 
     private AuthorizationDatabase database;

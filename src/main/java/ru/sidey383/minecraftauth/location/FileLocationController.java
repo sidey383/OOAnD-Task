@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import ru.sidey383.minecraftauth.user.User;
 
 import java.io.File;
@@ -17,11 +18,14 @@ public class FileLocationController implements LocationController {
 
     private final Logger logger;
 
+    private final Plugin plugin;
+
     private final File dir;
 
-    public FileLocationController(File dir, Logger logger) {
+    public FileLocationController(File dir, Logger logger, Plugin plugin) {
         this.dir = dir;
         this.logger = logger;
+        this.plugin = plugin;
     }
 
 
@@ -36,11 +40,12 @@ public class FileLocationController implements LocationController {
         if (pl == null)
             return;
         if (!f.exists()) {
-            pl.teleport(def);
+            Bukkit.getScheduler().runTask(plugin, () -> pl.teleport(def));
+
         } else {
             Configuration configuration = YamlConfiguration.loadConfiguration(f);
             Location loc = configuration.getObject("location", Location.class, def);
-            pl.teleport(loc);
+            Bukkit.getScheduler().runTask(plugin, () -> pl.teleport(loc));
         }
     }
 

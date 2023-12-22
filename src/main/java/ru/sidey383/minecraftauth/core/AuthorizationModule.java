@@ -4,6 +4,9 @@ import ru.sidey383.minecraftauth.CallBack;
 import ru.sidey383.minecraftauth.database.AuthorizationDatabase;
 import ru.sidey383.minecraftauth.user.User;
 
+/**
+ * Интерфейс, описывающий любой метод авторизации.
+ * **/
 public interface AuthorizationModule {
 
     void registerUser(User user, CallBack<RegistrationStatus> callback);
@@ -14,6 +17,10 @@ public interface AuthorizationModule {
 
     boolean isRegistered(User user);
 
+    /**
+     * Устанавливается в первую очередь.
+     * База данных в которой метод авторизации может хранить свои данные.
+     * **/
     void setDatabase(AuthorizationDatabase database);
 
 }

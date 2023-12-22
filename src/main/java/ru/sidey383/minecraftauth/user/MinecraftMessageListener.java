@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Слушатель сообщений игрока. Реализует взаимодействие с игроком через чат.
+ * **/
 public class MinecraftMessageListener implements MessageListener, Listener {
 
     private final Map<UUID, List<CallBack<String>>> values = new ConcurrentHashMap<>();
@@ -25,7 +28,9 @@ public class MinecraftMessageListener implements MessageListener, Listener {
 
     @Override
     public void acceptMessage(UUID uuid, CallBack<String> callBack) {
-        values.getOrDefault(uuid, new ArrayList<>()).add(callBack);
+        List<CallBack<String>> list = values.getOrDefault(uuid, new ArrayList<>());
+        list.add(callBack);
+        values.put(uuid, list);
     }
 
     public void cancelAll() {

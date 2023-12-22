@@ -5,6 +5,10 @@ import ru.sidey383.minecraftauth.user.User;
 
 import java.util.Optional;
 
+/**
+ * База данных. Разделяется между методами авторизации. <p/>
+ * Предоставляя унифицированный интерфейс взаимодействия для разных методов авторизации.
+ * **/
 public interface AuthorizationDatabase {
 
     <T extends AuthorizationModule> Optional<AuthorizationRecord<T>> getRecord(User user, Class<T> type);
